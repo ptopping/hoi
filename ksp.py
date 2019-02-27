@@ -163,17 +163,19 @@ arrival['key']=0
 orbit = departure.merge(arrival,how='outer')
 orbit.drop('key',axis=1,inplace=True)
 
-def dv_altitudechage(ra,rb,GM):
-    atx = ((ra)+(rb))/2
-    via = sqrt(GM/(ra))
-    vfb = sqrt(GM/(rb))
-    vtxa = sqrt(GM*(2/(ra)-1/atx))
-    vtxb = sqrt(GM*(2/(rb)-1/atx))
+def dv_altitudechage(ri,ra,rb,GM):
+    atx = ((ra+ri)+(rb+ri))/2
+    via = sqrt(GM/(ra+ri))
+    vfb = sqrt(GM/(rb+ri))
+    vtxa = sqrt(GM*(2/(ra+ri)-1/atx))
+    vtxb = sqrt(GM*(2/(rb+ri)-1/atx))
     dva = abs(vtxa - via)
     dvb = abs(vtxb - vib)
+    return dva + dvb
     
 for b in bodies:
-    if orbit['Departure Body'] == orbit['Arrival Body'] == b.name:
+    if orbit['Departure Body'] == orbit['Arrival Body']:
+        orbit.loc[orbit['Departure Body'] == b.name,'Delta-v'] = dv_altitudechange(b.radius,orbit['Departure Altitude'],orbit['Arrival Altitude']
            
     
 ksp.to_excel(ksp.xlsx)
