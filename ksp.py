@@ -142,17 +142,11 @@ ksp.loc[ksp['Situation'].str.contains('Surface'),'Altitude Max'] = 0
 ksp.loc[ksp['Situation'] == 'Flying Low', 'Altitude Min'] = 0
 for b in bodies:
     ksp.loc[(ksp['Situation'] == 'Flying Low') & (ksp['Celestial Body'] == b.name), 'Altitude Max'] = b.atmo_border
-for b in bodies:
     ksp.loc[(ksp['Situation'] == 'Flying High') & (ksp['Celestial Body'] == b.name), 'Altitude Min'] = b.atmo_border
-for b in bodies:
     ksp.loc[(ksp['Situation'] == 'Flying High') & (ksp['Celestial Body'] == b.name), 'Altitude Max'] = b.atmo_limit
-for b in bodies:
     ksp.loc[(ksp['Situation'] == 'In Space Low') & (ksp['Celestial Body'] == b.name), 'Altitude Min'] = b.atmo_limit
-for b in bodies:
     ksp.loc[(ksp['Situation'] == 'In Space Low') & (ksp['Celestial Body'] == b.name), 'Altitude Max'] = b.space_border
-for b in bodies:
     ksp.loc[(ksp['Situation'] == 'In Space High') & (ksp['Celestial Body'] == b.name), 'Altitude Min'] = b.space_border
-for b in bodies:
     ksp.loc[(ksp['Situation'] == 'In Space High') & (ksp['Celestial Body'] == b.name), 'Altitude Max'] = b.SOI
 
 orbit = ksp[['Celestial Body','Situation','Altitude Min']].drop_duplicates()
@@ -174,8 +168,10 @@ def dv_altitudechage(ri,ra,rb,GM):
     return dva + dvb
     
 for b in bodies:
-    if orbit['Departure Body'] == orbit['Arrival Body']:
-        orbit.loc[orbit['Departure Body'] == b.name,'Delta-v'] = dv_altitudechange(b.radius,orbit['Departure Altitude'],orbit['Arrival Altitude']
+    orbit.loc[orbit['Departure Body'] == b.name,'rbi'] == b.radius
+    orbit.loc[orbit['Departure Body'] == b.name,'rbf'] == b.radius
+    orbit.loc[orbit['Departure Body'] == b.name,'GMi'] == b.GM
+    orbit.loc[orbit['Departure Body'] == b.name,'GMf'] == b.GM
            
     
 ksp.to_excel(ksp.xlsx)
