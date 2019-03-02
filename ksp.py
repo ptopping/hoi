@@ -168,6 +168,6 @@ def dv_altitudechage(ri,rf,GMA,rA,GMB,rB,GMsys):
     return dva + dvb
     
 for b in bodies:
-    
+    orbit.loc[orbit['Departure Body'] == b.name, 'Departure Altitude'] += b.radius
     
 ksp.to_excel(ksp.xlsx)
