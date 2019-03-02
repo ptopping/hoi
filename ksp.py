@@ -157,21 +157,17 @@ arrival['key']=0
 orbit = departure.merge(arrival,how='outer')
 orbit.drop('key',axis=1,inplace=True)
 
-def dv_altitudechage(ri,ra,rb,GM):
-    atx = ((ra+ri)+(rb+ri))/2
-    via = sqrt(GM/(ra+ri))
-    vfb = sqrt(GM/(rb+ri))
-    vtxa = sqrt(GM*(2/(ra+ri)-1/atx))
-    vtxb = sqrt(GM*(2/(rb+ri)-1/atx))
+def dv_altitudechage(ri,rf,GMA,rA,GMB,rB,GMsys):
+    atx = (ri + rf) / 2
+    via = sqrt(GMA / rA)
+    vfb = sqrt(GMB / rB)
+    vtxa = sqrt(GMsys * (2 / ri - 1 / atx))
+    vtxb = sqrt(GMsys * (2 / rf - 1 / atx))
     dva = abs(vtxa - via)
     dvb = abs(vtxb - vib)
     return dva + dvb
     
 for b in bodies:
-    orbit.loc[orbit['Departure Body'] == b.name,'rbi'] == b.radius
-    orbit.loc[orbit['Departure Body'] == b.name,'rbf'] == b.radius
-    orbit.loc[orbit['Departure Body'] == b.name,'GMi'] == b.GM
-    orbit.loc[orbit['Departure Body'] == b.name,'GMf'] == b.GM
-           
+    
     
 ksp.to_excel(ksp.xlsx)
