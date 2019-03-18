@@ -50,6 +50,7 @@ eeloo = CelestialBody('Eeloo','Planet',['Global','Poles','Northern Glaciers','Mi
 'Mu Glacier'],90118820000,210000,7.4410815*10**10,19460.000,1.1908294*10**8,0,0,60000)
 
 bodies = [kerbol,moho,eve,gilly,kerbin,mun,minmus,duna,ike,dres,jool,laythe,vall,tylo,bop,pol,eeloo]
+planets = [b for b in bodies if b.type == 'Planet']
 
 activity = pd.Series(['Surface Sample','EVA Report','Asteroid Sample','Crew Report','Mystery Goo Observation','Materials Study','Temperature Scan','Atmospheric Pressure Scan','Gravity Scan',
 'Seismic Scan','Atmosphere Analysis','Infrared Telescope'],name='Activity')
@@ -140,6 +141,7 @@ ksp.drop(droplist.index,inplace=True)
 ksp.loc[ksp['Situation'].str.contains('Surface'),'Altitude Min'] = 0
 ksp.loc[ksp['Situation'].str.contains('Surface'),'Altitude Max'] = 0
 ksp.loc[ksp['Situation'] == 'Flying Low', 'Altitude Min'] = 0
+
 for b in bodies:
     ksp.loc[(ksp['Situation'] == 'Flying Low') & (ksp['Celestial Body'] == b.name), 'Altitude Max'] = b.atmo_border
     ksp.loc[(ksp['Situation'] == 'Flying High') & (ksp['Celestial Body'] == b.name), 'Altitude Min'] = b.atmo_border
@@ -156,18 +158,78 @@ departure['key']=0
 arrival['key']=0
 orbit = departure.merge(arrival,how='outer')
 orbit.drop('key',axis=1,inplace=True)
+orbit = orbit[(orbit['Departure Situation'].str.contains('Space')) & (orbit['Arrival Situation'].str.contains('Space'))]
 
-def dv_altitudechage(ri,rf,GMA,rA,GMB,rB,GMsys):
-    atx = (ri + rf) / 2
-    via = sqrt(GMA / rA)
-    vfb = sqrt(GMB / rB)
-    vtxa = sqrt(GMsys * (2 / ri - 1 / atx))
-    vtxb = sqrt(GMsys * (2 / rf - 1 / atx))
+def dv_altitudechange(GM,rA,rB):
+    atx = (rA + rB) / 2
+    via = sqrt(GM / rA)
+    vfb = sqrt(GM / rB)
+    vtxa = sqrt(GM * (2 / rA - 1 / atx))
+    vtxb = sqrt(GM * (2 / rB - 1 / atx))
     dva = abs(vtxa - via)
-    dvb = abs(vtxb - vib)
-    return dva + dvb
-    
+    dvb = abs(vtxb - vfb)
+    dv = dva + dvb
+    return dv
+
 for b in bodies:
-    orbit.loc[orbit['Departure Body'] == b.name, 'Departure Altitude'] += b.radius
+    orbit.loc[(orbit['Departure Body'] == b.name) & (orbit['Arrival Body'] == b.name),'GM'] = b.GM
+    orbit.loc[orbit['Departure Body'] == b.name,'Departure Radius'] = b.radius
+    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Radius'] = b.radius
+    orbit['rA'] = orbit['Departure Radius'] + orbit['Departure Altitude']
+    orbit['rB'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
+    orbit.loc[(orbit['Departure Body'] == b.name) & (orbit['Arrival Body'] == b.name),'Delta-v'] = orbit.apply(lambda x: dv_altitudechange(x['GM'],x['rA'],x['rB']),axis=1)
+
+for b in bodies:
+    orbit.loc[orbit['Departure Body'] == b.name,'GMsun'] = kerbol.GM
+    orbit.loc[orbit['Departure Body'] == b.name,'Departure sm_axis'] = b.sm_axis
+    orbit.loc[orbit['Departure Body'] == b.name,'Departure Radius'] = b.radius
+    orbit.loc[orbit['Departure Body'] == b.name,'Departure GM'] = b.GM
+    orbit.loc[orbit['Departure Body'] == b.name,'Departure Type'] = b.type
+    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival sm_axis'] = b.sm_axis
+    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Radius'] = b.radius
+    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival GM'] = b.GM
+    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Type'] = b.type
+
+def dv_altitudechange(GM,rA,rB):
+    atx = (rA + rB) / 2
+    via = sqrt(GM / rA)
+    vfb = sqrt(GM / rB)
+    vtxa = sqrt(GM * (2 / rA - 1 / atx))
+    vtxb = sqrt(GM * (2 / rB - 1 / atx))
+    dva = abs(vtxa - via)
+    dvb = abs(vtxb - vfb)
+    dv = dva + dvb
+    return dv
+
     
-ksp.to_excel(ksp.xlsx)
+orbit['GMsys'] = kerbol.GM
+orbit['rA'] = orbit['Departure Radius'] + orbit['Departure Altitude']
+orbit['rB'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
+
+orbit['Delta-v'] = orbit.apply(lambda x: planet_dv(x['Departure sm_axis'],x['Arrival sm_axis'],x['Departure GM'],x['rA'],x['Arrival GM'],x['rB'],x['GMsys']),axis=1)
+    
+orbit['GMsys'] = kerbol.GM
+orbit['rA'] = orbit['Departure Radius'] + orbit['Departure Altitude']
+orbit['rB'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
+
+for b in bodies:
+    orbit['Delta-v'] = orbit.apply(lambda x: planet_dv(x['ri'],x['rf'],x['GMA'],x['rA'],x['GMB'],x['rB']),axis=1)
+
+        self.sm_axis = sm_axis
+        self.radius = radius
+        self.GM = GM
+        self.type = type
+
+def dv_altitudechange(GM,rA,rB):
+    atx = (rA + rB) / 2
+    via = sqrt(GM / rA)
+    vfb = sqrt(GM / rB)
+    vtxa = sqrt(GM * (2 / rA - 1 / atx))
+    vtxb = sqrt(GM * (2 / rB - 1 / atx))
+    dva = abs(vtxa - via)
+    dvb = abs(vtxb - vfb)
+    dv = dva + dvb
+    return dv
+
+    
+ksp.to_excel('ksp.xlsx')
