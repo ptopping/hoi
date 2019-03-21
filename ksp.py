@@ -160,35 +160,23 @@ orbit = departure.merge(arrival,how='outer')
 orbit.drop('key',axis=1,inplace=True)
 orbit = orbit[(orbit['Departure Situation'].str.contains('Space')) & (orbit['Arrival Situation'].str.contains('Space'))]
 
-def dv_altitudechange(GM,rA,rB):
-    atx = (rA + rB) / 2
-    via = sqrt(GM / rA)
-    vfb = sqrt(GM / rB)
-    vtxa = sqrt(GM * (2 / rA - 1 / atx))
-    vtxb = sqrt(GM * (2 / rB - 1 / atx))
-    dva = abs(vtxa - via)
-    dvb = abs(vtxb - vfb)
-    dv = dva + dvb
-    return dv
-
 for b in bodies:
-    orbit.loc[(orbit['Departure Body'] == b.name) & (orbit['Arrival Body'] == b.name),'GM'] = b.GM
-    orbit.loc[orbit['Departure Body'] == b.name,'Departure Radius'] = b.radius
-    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Radius'] = b.radius
-    orbit['rA'] = orbit['Departure Radius'] + orbit['Departure Altitude']
-    orbit['rB'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
-    orbit.loc[(orbit['Departure Body'] == b.name) & (orbit['Arrival Body'] == b.name),'Delta-v'] = orbit.apply(lambda x: dv_altitudechange(x['GM'],x['rA'],x['rB']),axis=1)
-
-for b in bodies:
-    orbit.loc[orbit['Departure Body'] == b.name,'GMsun'] = kerbol.GM
-    orbit.loc[orbit['Departure Body'] == b.name,'Departure sm_axis'] = b.sm_axis
+    orbit.loc[orbit['Departure Body'] == b.name,'Kerbol GM'] = kerbol.GM
+    orbit.loc[orbit['Departure Body'] == b.name,'Departure sm_Axis'] = b.sm_axis
     orbit.loc[orbit['Departure Body'] == b.name,'Departure Radius'] = b.radius
     orbit.loc[orbit['Departure Body'] == b.name,'Departure GM'] = b.GM
-    orbit.loc[orbit['Departure Body'] == b.name,'Departure Type'] = b.type
     orbit.loc[orbit['Arrival Body'] == b.name,'Arrival sm_axis'] = b.sm_axis
     orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Radius'] = b.radius
     orbit.loc[orbit['Arrival Body'] == b.name,'Arrival GM'] = b.GM
-    orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Type'] = b.type
+
+orbit['Departure Alt'] = orbit['Departure Radius'] + orbit['Departure Altitude']
+orbit['Arrival Alt'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
+
+for p in planets:
+    orbit.loc[orbit['Departure Body'] == p.name,'Departure Parent GM'] = p.GM
+    orbit.loc[orbit['Departure Body'] == p.name,'Departure Parent sm_axis'] = p.sm_axis
+    orbit.loc[orbit['Arrival Body'] == p.name,'Arrival Parent sm_axis'] = p.sm_axis
+    orbit.loc[orbit['Arrival Body'] == p.name,'Arrival Parent GM'] = p.GM
 
 def dv_altitudechange(GM,rA,rB):
     atx = (rA + rB) / 2
@@ -201,35 +189,10 @@ def dv_altitudechange(GM,rA,rB):
     dv = dva + dvb
     return dv
 
-    
-orbit['GMsys'] = kerbol.GM
-orbit['rA'] = orbit['Departure Radius'] + orbit['Departure Altitude']
-orbit['rB'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
-
 orbit['Delta-v'] = orbit.apply(lambda x: planet_dv(x['Departure sm_axis'],x['Arrival sm_axis'],x['Departure GM'],x['rA'],x['Arrival GM'],x['rB'],x['GMsys']),axis=1)
-    
-orbit['GMsys'] = kerbol.GM
-orbit['rA'] = orbit['Departure Radius'] + orbit['Departure Altitude']
-orbit['rB'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
+  
 
 for b in bodies:
     orbit['Delta-v'] = orbit.apply(lambda x: planet_dv(x['ri'],x['rf'],x['GMA'],x['rA'],x['GMB'],x['rB']),axis=1)
-
-        self.sm_axis = sm_axis
-        self.radius = radius
-        self.GM = GM
-        self.type = type
-
-def dv_altitudechange(GM,rA,rB):
-    atx = (rA + rB) / 2
-    via = sqrt(GM / rA)
-    vfb = sqrt(GM / rB)
-    vtxa = sqrt(GM * (2 / rA - 1 / atx))
-    vtxb = sqrt(GM * (2 / rB - 1 / atx))
-    dva = abs(vtxa - via)
-    dvb = abs(vtxb - vfb)
-    dv = dva + dvb
-    return dv
-
     
 ksp.to_excel('ksp.xlsx')
