@@ -151,6 +151,27 @@ for b in bodies:
     ksp.loc[(ksp['Situation'] == 'In Space High') & (ksp['Celestial Body'] == b.name), 'Altitude Min'] = b.space_border
     ksp.loc[(ksp['Situation'] == 'In Space High') & (ksp['Celestial Body'] == b.name), 'Altitude Max'] = b.SOI
 
+dv_altitude change(body,initalt,finalalt):
+    rA = body.radius + initalt
+    rB = body.radius + finalalt
+    GM = body.GM
+    atx = (rA + rB) / 2
+    via = =sqrt(GM / rA)
+    vfb = sqrt(GM / rB)
+    vtxa = sqrt(GM * (2 / rA - 1 / atx)
+    vtxb = 
+    dva = 
+    dvb = 
+    dvt =
+    return dvt
+    
+dv_lunartransfer():
+    
+dv_planetrarytransfer():
+    
+dv_lunarlunarttransfer():
+
+    
 orbit = ksp[['Celestial Body','Situation','Altitude Min']].drop_duplicates()
 departure = orbit.rename(columns={'Celestial Body':'Departure Body','Situation':'Departure Situation','Altitude Min':'Departure Altitude'})
 arrival = orbit.rename(columns={'Celestial Body':'Arrival Body','Situation':'Arrival Situation','Altitude Min':'Arrival Altitude'})
