@@ -169,8 +169,8 @@ for b in bodies:
     orbit.loc[orbit['Arrival Body'] == b.name,'Arrival Radius'] = b.radius
     orbit.loc[orbit['Arrival Body'] == b.name,'Arrival GM'] = b.GM
 
-orbit['Departure Alt'] = orbit['Departure Radius'] + orbit['Departure Altitude']
-orbit['Arrival Alt'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
+orbit['Departure Altitude'] = orbit['Departure Radius'] + orbit['Departure Altitude']
+orbit['Arrival Altitude'] = orbit['Arrival Radius'] + orbit['Arrival Altitude']
 
 for p in planets:
     orbit.loc[orbit['Departure Body'] == p.name,'Departure Parent GM'] = p.GM
@@ -178,21 +178,28 @@ for p in planets:
     orbit.loc[orbit['Arrival Body'] == p.name,'Arrival Parent sm_axis'] = p.sm_axis
     orbit.loc[orbit['Arrival Body'] == p.name,'Arrival Parent GM'] = p.GM
 
-def dv_altitudechange(GM,rA,rB):
-    atx = (rA + rB) / 2
-    via = sqrt(GM / rA)
-    vfb = sqrt(GM / rB)
-    vtxa = sqrt(GM * (2 / rA - 1 / atx))
-    vtxb = sqrt(GM * (2 / rB - 1 / atx))
-    dva = abs(vtxa - via)
-    dvb = abs(vtxb - vfb)
-    dv = dva + dvb
+def dv_altitudechange(GM,ri,rf):
+    atx = (ri + rf) / 2
+    vii = sqrt(GM / ri)
+    vff = sqrt(GM / rf)
+    vtxi = sqrt(GM * (2 / ri - 1 / atx))
+    vtxf = sqrt(GM * (2 / rf - 1 / atx))
+    dvi = abs(vtxi - vii)
+    dvf = abs(vtxf - vff)
+    dv = dvi + dvi
     return dv
 
-orbit['Delta-v'] = orbit.apply(lambda x: planet_dv(x['Departure sm_axis'],x['Arrival sm_axis'],x['Departure GM'],x['rA'],x['Arrival GM'],x['rB'],x['GMsys']),axis=1)
-  
+def dv_lunartransfer(GMP, GMM, ri, rf, sm):
+    atx = (ri + sm) / 2
+    vii = sqrt(GMP / ri)
+    vff = sqrt(GMM / rf)
+    tarv = sqrt(GMP / sm)
+    vtxi = sqrt(GM * (2 / ri - 1 / atx))
+    vtxf = sqrt(GM * (2 / sm - 1 / atx))
+    dvi = abs(vtxi - vii)
+    tarv - vtxf
 
-for b in bodies:
-    orbit['Delta-v'] = orbit.apply(lambda x: planet_dv(x['ri'],x['rf'],x['GMA'],x['rA'],x['GMB'],x['rB']),axis=1)
-    
+orbit['Altitude Change'] = orbit.apply(lambda x: dv_altitudechange(x['Departure GM'],x['Departure Altitude'],x['Arrival Altitude']),axis=1)
+
+
 ksp.to_excel('ksp.xlsx')
