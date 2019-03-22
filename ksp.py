@@ -193,11 +193,15 @@ def dv_lunartransfer(GMP, GMM, ri, rf, sm):
     atx = (ri + sm) / 2
     vii = sqrt(GMP / ri)
     vff = sqrt(GMM / rf)
-    tarv = sqrt(GMP / sm)
+    vm = sqrt(GMP / sm)
     vtxi = sqrt(GM * (2 / ri - 1 / atx))
     vtxf = sqrt(GM * (2 / sm - 1 / atx))
     dvi = abs(vtxi - vii)
-    tarv - vtxf
+    mav = vm - vtxf
+    mov = sqrt(mav ** 2 + 2 * GMM / rf)
+    dvf = abs(mov - vff)
+    dv = dvi + dvf
+    return dv
 
 orbit['Altitude Change'] = orbit.apply(lambda x: dv_altitudechange(x['Departure GM'],x['Departure Altitude'],x['Arrival Altitude']),axis=1)
 
