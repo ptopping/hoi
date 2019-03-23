@@ -156,17 +156,19 @@ dv_altitude change(body,initalt,finalalt):
     rB = body.radius + finalalt
     GM = body.GM
     atx = (rA + rB) / 2
-    via = =sqrt(GM / rA)
-    vfb = sqrt(GM / rB)
-    vtxa = sqrt(GM * (2 / rA - 1 / atx)
-    vtxb = 
-    dva = 
-    dvb = 
-    dvt =
-    return dvt
+    ViA = =sqrt(GM / rA)
+    VfB = sqrt(GM / rB)
+    VtxA = sqrt(GM * (2 / rA - 1 / atx)
+    VtxB = sqrt(GM * (2 / rB - 1 / atx)
+    DVA = abs(VtxA - ViA)
+    DVB = abs(VfB - VtxB)
+    DVT = DVA + DVB
+    return DVT
     
-dv_lunartransfer():
-    
+dv_lunartransfer(body1,body2,initalt,finalalt):
+    GM1 = body1.gm
+            
+                
 dv_planetrarytransfer():
     
 dv_lunarlunarttransfer():
