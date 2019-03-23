@@ -165,10 +165,18 @@ dv_altitude change(body,initalt,finalalt):
     DVT = DVA + DVB
     return DVT
     
-dv_lunartransfer(body1,body2,initalt,finalalt):
+dv_lunartransfer(body1,body2,initalt,finalalt):    
     GM1 = body1.gm
-            
-                
+	GM2 = body2.gm
+	r1 = body1.radius + initalt
+	r2 = body2.radius + finalalt
+	aM = body2.sm_axis
+	atx = (r1 + aM) / 2
+	Vi1 = sqrt(GM1 / r1)
+	VtxA = sqrt(GM1 * (2 / rA - 1 / atx)
+	
+	
+
 dv_planetrarytransfer():
     
 dv_lunarlunarttransfer():
