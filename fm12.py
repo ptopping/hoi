@@ -1,14 +1,17 @@
 available = roster[['Name','Position','Rating']].set_index(['Name','Position'])
-selection = pulp.LpVariable.dicts("selection",((n, p) for n, p in available.index),cat='Binary')
+selection = pulp.LpVariable.dicts("selection",((name, position) for name, position in available.index),cat='Binary')
 
 model = pulp.LpProblem("LineUp Selection", pulp.LpMaximize)
 
-model += pulp.lpSum([selection[n, p] * roster.loc[(n, p), 'Ratings'] for n, p in available.index]
+model += pulp.lpSum([selection[name, position] * available.loc[(name, position), 'Ratings'] for name, position in available.index]
 
-# Production in any month must be equal to demand
-months = demand.index
-for month in months:
-    model += production[(month, 'A')] + production[(month, 'B')] == demand.loc[month, 'Demand']
+# Players may only be selected once
+for name,position in available.index:
+    model += selection[(player, position)] <= 1
 
+# Only one player per position
+for name,position in available.index:
+    model += selection[(player, position)] <= 1                    
+                    
 model.solve()
 pulp.LpStatus[model.status]
