@@ -12,14 +12,18 @@ Email your finalized, completely reproducible .r or .py script to L.A. Care's Ta
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def sensitivity(threshold):
-  model.loc[(model['class']==1 & model['predicted_prob']>=threshhold),'TP']
-  model.loc[(model['class']==1 & model['predicted_prob']<threshold),'FN']
-  return model['TN'].sum() / (model['TN'].sum() + model['FP'].sum())
+url = 'https://github.com/screening-lacare/data_scientist_screening/blob/master/model_outcome.csv'
+model = pd.read_html(url)[0]
 
-def specificity(threshhold):
-  model.loc[(model['class']==0 & model['predicted_prob']<threshold),'TN']
-  model.loc[(model['class']==0 & model['predicted_prob']>=threshold),'FP']
-  return model['TN'].sum() / (model['TN'].sum() + model['FP'].sum())
+model = model.set_index('index').drop('Unnamed: 0',axis=1)
+
+def sensitivity(df,threshold):
+    df.loc[(df['class']==True) & (df['predicted_prob']>=threshold),'TP'] = 1
+    df.loc[(df['class']==True) & (df['predicted_prob']<threshold),'FN'] = 1
+    return df['TP'].sum() / (df['TP'].sum() + df['FN'].sum())
+
+def specificity(df,threshold):
+    df.loc[(model['class']==False) & (df['predicted_prob']<threshold),'TN'] = 1
+    df.loc[(model['class']==False) & (df['predicted_prob']>=threshold),'FP'] = 1
+    return df['TN'].sum() / (df['TN'].sum() + df['FP'].sum())
   
-
