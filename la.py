@@ -8,3 +8,18 @@ Manually calculate the sensitivity and specificity of the model, using a predict
 Manually calculate the Area Under the Receiver Operating Characteristic Curve.
 Visualize the Receiver Operating Characterstic Curve.
 Email your finalized, completely reproducible .r or .py script to L.A. Care's Talent Acquisition Specialist, Jamessa Jones, at jjones@lacare.org.
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def sensitivity(threshold):
+  model.loc[(model['class']==1 & model['predicted_prob']>=threshhold),'TP']
+  model.loc[(model['class']==1 & model['predicted_prob']<threshold),'FN']
+  return model['TN'].sum() / (model['TN'].sum() + model['FP'].sum())
+
+def specificity(threshhold):
+  model.loc[(model['class']==0 & model['predicted_prob']<threshold),'TN']
+  model.loc[(model['class']==0 & model['predicted_prob']>=threshold),'FP']
+  return model['TN'].sum() / (model['TN'].sum() + model['FP'].sum())
+  
+
