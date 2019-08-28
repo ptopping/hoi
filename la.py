@@ -25,5 +25,23 @@ def sensitivity(df,threshold):
 def specificity(df,threshold):
     df.loc[(model['class']==False) & (df['predicted_prob']<threshold),'TN'] = 1
     df.loc[(model['class']==False) & (df['predicted_prob']>=threshold),'FP'] = 1
-    return df['TN'].sum() / (df['TN'].sum() + df['FP'].sum())
+	return df['TN'].sum() / (df['TN'].sum() + df['FP'].sum())
   
+def roc_curve(dataframe):
+	thresh_list = [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]
+	df = pd.DataFrame(index=thresh_list, columns=['Threshhold','True Positive Rate','False Positive Rate'])
+	for t in thresh_list:
+		df.append([t, sensitivity(dataframe,t), specificity(dataframe,t)])
+
+#Data for plotting
+x = roc_curve(model)['False Positive Rate']
+y = roc_curve(model)['True Positive Rate']
+plt.plot(x, y)
+	
+fig, ax = plt.subplots()
+ax.set_xlim([0,1])
+ax.set_ylim([0,1])
+ax.plot(ax.get_xlim(),ax.get_xlim(), color='red')
+ax.plot(x,y)
+
+plt.show()
