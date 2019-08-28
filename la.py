@@ -41,7 +41,7 @@ plt.plot(x, y)
 fig, ax = plt.subplots()
 ax.set_xlim([0,1])
 ax.set_ylim([0,1])
-ax.plot(ax.get_xlim(),ax.get_xlim(), color='red')
+ax.plot(x,x, '--r')
 ax.plot(x,y)
 
 plt.show()
