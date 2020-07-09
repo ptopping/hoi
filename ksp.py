@@ -186,6 +186,7 @@ properties = Properties(description='Dres is a very small planet. It was '\
                         displayName='Dres^N', selectable=True,
                         RnDVisibility='Visible', RnDRotation=False,
                         maxZoom=60000)
+
 sciencevalues = ScienceValues(landedDataValue=8, splashedDataValue=1,
                               flyingLowDataValue=1, flyingHighDataValue=1,
                               inSpaceLowDataValue=7, inSpaceHighDataValue=6,
@@ -336,8 +337,24 @@ orbit = Orbit(referenceBody='Sun', inclination=0.0599999986588955,
 scaledversion = ScaledVersion(type=Atmospheric, fadeStart=30000,
                               fadeEnd=100000, sphericalModel=False,
                               deferMesh=False, invisible=False)
+		Atmosphere
+		{
+			enabled = True // Whether the body has an atmosphere.
+			oxygen = False // Whether the atmosphere contains oxygen.
+			staticDensityASL = 0.149935108881759 // Atmospheric density at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			adiabaticIndex = 1.20000004768372
+			atmosphereDepth = 50000 // The height of the atmosphere.
+			gasMassLapseRate = 3.04406677337964
+			atmosphereMolarMass = 0.0430000014603138
+			pressureCurveIsNormalized = False // Whether the pressure curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			staticPressureASL = 6.75500011444092 // The static pressure at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			temperatureCurveIsNormalized = False // Whether the temperature curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			temperatureLapseRate = 0.005
+			temperatureSeaLevel = 250 // The static temperature at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			ambientColor = 0.323529422,0.220170617,0.173659176,1 // All objects inside of the atmosphere will slightly shine in this color.
+			lightColor = 0.509465635,0.588402689,0.643137276,0
+			addAFG = True
 
-properties.add_science(sciencevalues)
 properties.add_science(sciencevalues)
 biomes = [poles, midlands, lowlands, craters, highlands, midland_sea,
           northern_basin, southern_basin, northern_shelf, midland_canyon,
@@ -384,280 +401,139 @@ sciencevalues = ScienceValues(landedDataValue=15, splashedDataValue=1,
                               recoveryValue=10, flyingAltitudeThreshold=18000,
                               spaceAltitudeThreshold=60000)
 
-poles = Biomes(name='Poles', displayName='Poles', value=0, color=1, 1, 1, 1)
+poles = Biome(name='Poles', displayName='Poles', value=0, color=1, 1, 1, 1)
 
-northern_glaciers = Biomes(name='Northern Glaciers',
+northern_glaciers = Biome(name='Northern Glaciers',
                            displayName='Northern Glaciers', value=0,
                            color = [0.792156875, 0.792156875, 0.792156875, 1])
 
-lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
+lowlands = Biome(name='Lowlands', displayName='Lowlands', value=0,
                   color = [0.482352942, 0.639215708, 0.905882359, 1])
-				}
-				Value
-				{
-					name = Highlands
-					displayName = Highlands
-					value = 0
-					color = 0.835294127,0.854901969,0.882352948,1
-				}
-				Value
-				{
-					name = Ice Canyons
-					displayName = Ice Canyons
-					value = 0
-					color = 1,0.709803939,0.388235301,1
-				}
-				Value
-				{
-					name = Craters
-					displayName = Craters
-					value = 0
-					color = 0.87843138,0.533333361,0.13333334,1
-				}
-				Value
-				{
-					name = Midlands
-					displayName = Midlands
-					value = 0
-					color = 0.745098054,0.807843149,0.909803927,1
-				}
-				Value
-				{
-					name = Fragipan
-					displayName = Fragipan
-					value = 0
-					color = 1,0.80392158,0.580392182,1
-				}
-				Value
-				{
-					name = Babbage Patch
-					displayName = Babbage Patch
-					value = 0
-					color = 0.592156887,0.701960802,0.894117653,1
-				}
-				Value
-				{
-					name = Southern Glaciers
-					displayName = Southern Glaciers
-					value = 0
-					color = 0.87843138,0.87843138,0.87843138,1
-				}
-				Value
-				{
-					name = Mu Glacier
-					displayName = Mu Glacier
-					value = 0
-					color = 0.486274511,0.486274511,0.486274511,1
-				}
-			}
-		}
-		Orbit
-		{
-			referenceBody = Sun # The body that this body is orbiting around.
-			inclination = 6.15
-			eccentricity = 0.26
-			semiMajorAxis = 90118820000 # The altitude of the highest point in the orbit
-			longitudeOfAscendingNode = 50 # The position of the highest point on the orbit circle
-			argumentOfPeriapsis = 260
-			meanAnomalyAtEpoch = 3.14000010490417
-			meanAnomalyAtEpochD = 179.908753681645
-			epoch = 0
-			color = 0.407843143,0.41568628,0.41568628,0.501960814 # The color of the orbit line in the Tracking Station
-			nodeColor = 0.407843143,0.41568628,0.41568628,0.501960814 # The color of the circle that marks the planets current position on the orbit
-			mode = REDRAW_AND_RECALCULATE
-			icon = ALL
-			cameraSmaRatioBounds = 0.03 25
-			period = 156992048.397359
-		}
-        ScaledVersion
-        {
-            type = Vacuum
-            fadeStart = 95000
-            fadeEnd = 100000
-            sphericalModel = False
-            deferMesh = False
-            invisible = False
-{
-	Body
-	{
-		name = Eve
-		barycenter = False
-		identifier = Squad/Eve
-		implements = 
-		finalizeOrbit = False
-		randomMainMenuBody = False
-		contractWeight = 30
-		Properties
-		{
-			description = Eve is certainly the purplest object in the solar system. It’s one of the larger, most visible objects, mainly because of its very, very purple tint.It is considered by some to be almost a sister planet to Kerbin. Well, despite the purple, and the toxic atmosphere, and the extreme press- ures and temperatures. Actually, it’s not very similar at all is it? Who are those people?
-			radius = 700000
-			geeASL = 1.7005807760833
-			mass = 1.2243980038014E+23
-			gravParameter = 8171730229210.87
-			rotates = True
-			rotationPeriod = 80500
-			tidallyLocked = False
-			initialRotation = 0
-			inverseRotThresholdAltitude = 100000
-			albedo = 0.449999988079071
-			emissivity = 0.550000011920929
-			coreTemperatureOffset = 0
-			timewarpAltitudeLimits = 0 30000 30000 60000 120000 240000 480000 600000
-			sphereOfInfluence = 85109364.7382441
-			solarRotationPeriod = False
-			navballSwitchRadiusMult = 0.06
-			navballSwitchRadiusMultLow = 0.055
-			biomeMap = BUILTIN/eve_biome
-			nonExactThreshold = -1
-			exactSearch = False
-			useTheInName = False
-			displayName = Eve^N
-			selectable = True
-			RnDVisibility = Visible
-			RnDRotation = False
-			maxZoom = 60000
-			ScienceValues
-			{
-				landedDataValue = 8
-				splashedDataValue = 8
-				flyingLowDataValue = 6
-				flyingHighDataValue = 6
-				inSpaceLowDataValue = 7
-				inSpaceHighDataValue = 5
-				recoveryValue = 5
-				flyingAltitudeThreshold = 22000
-				spaceAltitudeThreshold = 400000
-			}
-			Biomes
-			{
-				Value
-				{
-					name = Poles
-					displayName = Poles
-					value = 0
-					color = 0.862745106,0.75686276,0.996078432,1
-				}
-				Value
-				{
-					name = Midlands
-					displayName = Midlands
-					value = 0
-					color = 0.450980395,0.180392161,0.525490224,1
-				}
-				Value
-				{
-					name = Explodium Sea
-					displayName = Explodium Sea
-					value = 0
-					color = 0.694117665,0.349019617,0.513725519,1
-				}
-				Value
-				{
-					name = Lowlands
-					displayName = Lowlands
-					value = 0
-					color = 0.360784322,0.0980392173,0.435294122,1
-				}
-				Value
-				{
-					name = Highlands
-					displayName = Highlands
-					value = 0
-					color = 0.541176498,0.286274523,0.611764729,1
-				}
-				Value
-				{
-					name = Peaks
-					displayName = Peaks
-					value = 0
-					color = 0.65882355,0.443137258,0.729411781,1
-				}
-				Value
-				{
-					name = Impact Ejecta
-					displayName = Impact Ejecta
-					value = 0
-					color = 0.654901981,0.396078438,0.980392158,1
-				}
-				Value
-				{
-					name = Crater Lake
-					displayName = Crater Lake
-					value = 0
-					color = 0.556862772,0.184313729,0.360784322,1
-				}
-				Value
-				{
-					name = Western Sea
-					displayName = Western Sea
-					value = 0
-					color = 0.835294127,0.556862772,0.690196097,1
-				}
-				Value
-				{
-					name = Olympus
-					displayName = Olympus
-					value = 0
-					color = 1,1,1,1
-				}
-				Value
-				{
-					name = Eastern Sea
-					displayName = Eastern Sea
-					value = 0
-					color = 0.41568628,0.0705882385,0.235294119,1
-				}
-				Value
-				{
-					name = Craters
-					displayName = Craters
-					value = 0
-					color = 0.654901981,0.396078438,0.980392158,1
-				}
-				Value
-				{
-					name = Foothills
-					displayName = Foothills
-					value = 0
-					color = 0.811764717,0.650980413,0.854901969,1
-				}
-				Value
-				{
-					name = Akatsuki Lake
-					displayName = Akatsuki Lake
-					value = 0
-					color = 0.729411781,0.568627477,0.741176486,1
-				}
-				Value
-				{
-					name = Shallows
-					displayName = Shallows
-					value = 0
-					color = 0.545098066,0.400000006,0.552941203,1
-				}
-			}
-		}
-		Orbit
-		{
-			referenceBody = Sun # The body that this body is orbiting around.
-			inclination = 2.09999990463257
-			eccentricity = 0.00999999977648258
-			semiMajorAxis = 9832684544 # The altitude of the highest point in the orbit
-			longitudeOfAscendingNode = 15 # The position of the highest point on the orbit circle
-			argumentOfPeriapsis = 0
-			meanAnomalyAtEpoch = 3.14000010490417
-			meanAnomalyAtEpochD = 179.908753681645
-			epoch = 0
-			color = 0.423529416,0.125490203,0.894117653,0.501960814 # The color of the orbit line in the Tracking Station
-			nodeColor = 0.423529416,0.125490203,0.894117653,0.501960814 # The color of the circle that marks the planets current position on the orbit
-			mode = REDRAW_AND_RECALCULATE
-			icon = ALL
-			cameraSmaRatioBounds = 0.03 25
-			period = 5657995.14648304
-		}
 
-{
-	Body
+highlands = Biome(name=Highlands, displayName=Highlands, value=0, color=[0.835294127, 0.854901969, 0.882352948, 1])
+
+ice_canyons = Biome(name Ice Canyons, displayName=Ice Canyons, value=0, color=[1, 0.709803939, 0.388235301, 1])
+
+craters = Biome(name=Craters, displayName=Craters, value=0, color=[0.87843138, 0.533333361, 0.13333334, 1])
+
+midlands = Biome(name=Midlands, displayName=Midlands, value=0, color=[0.745098054, 0.807843149, 0.909803927, 1]
+
+fragipan = Biome(name=Fragipan, displayName=Fragipan, value=0, color=[1, 0.80392158, 0.580392182, 1]
+
+babbage_patch = Biome(name=Babbage Patch, displayName=Babbage Patch, value=0, color=[0.592156887, 0.701960802, 0.894117653, 1])
+
+southern_glaciers = Biome(name=Southern Glaciers, displayName=Southern Glaciers, value=0, color=[0.87843138, 0.87843138, 0.87843138, 1])
+
+mu_glacier = Biome(name=Mu Glacier, displayName=Mu Glacier, value=0, color=[0.486274511, 0.486274511, 0.486274511, 1])
+
+orbit = Orbit(referenceBody=Sun, inclination=6.15, eccentricity=0.26, semiMajorAxis=90118820000, longitudeOfAscendingNode=50, argumentOfPeriapsis=260, meanAnomalyAtEpoch=3.14000010490417, meanAnomalyAtEpochD=179.908753681645, epoch=0, color=[0.407843143, 0.41568628, 0.41568628, 0.501960814], nodeColor=[0.407843143, 0.41568628, 0.41568628, 0.501960814], mode=REDRAW_AND_RECALCULATE, icon=ALL, cameraSmaRatioBounds=[0.03, 25], period=156992048.397359)
+
+scaledversion = ScaledVersion(type=Vacuum, fadeStart=95000, fadeEnd=100000, sphericalModel=False, deferMesh=False, invisible=False)
+
+
+properties.add_science(sciencevalues)
+biomes = [poles, northern_glaciers, lowlands, highlands, ice_canyons, craters, midlands, fragipan, babbage_patch, southern_glaciers, mu_glacier]
+for b in biome:
+    properties.add_biome(b)
+eeloo.add_properties(properties)
+eeloo.add_orbit(orbit)
+eeloo.add_scaled(scaledversion)
+
+eve = CelestialBody(name=Eve, barycenter=False, identifier=Squad/Eve, implements=None, finalizeOrbit=False, randomMainMenuBody=False, contractWeight=30)
+
+properties = Properties(
+			description=Eve is certainly the purplest object in the solar system. It’s one of the larger, most visible objects, mainly because of its very, very purple tint.It is considered by some to be almost a sister planet to Kerbin. Well, despite the purple, and the toxic atmosphere, and the extreme press- ures and temperatures. Actually, it’s not very similar at all is it? Who are those people?,
+			radius=700000,
+			geeASL=1.7005807760833,
+			mass=1.2243980038014E+23,
+			gravParameter=8171730229210.87,
+			rotates=True,
+			rotationPeriod=80500,
+			tidallyLocked=False,
+			initialRotation=0,
+			inverseRotThresholdAltitude=100000,
+			albedo=0.449999988079071,
+			emissivity=0.550000011920929,
+			coreTemperatureOffset=0,
+			timewarpAltitudeLimits=[0, 30000, 30000, 60000, 120000, 240000, 480000, 600000],
+			sphereOfInfluence=85109364.7382441,
+			solarRotationPeriod=False,
+			navballSwitchRadiusMult=0.06,
+			navballSwitchRadiusMultLow=0.055,
+			biomeMap=BUILTIN/eve_biome,
+			nonExactThreshold=-1,
+			exactSearch=False,
+			useTheInName=False,
+			displayName=Eve^N,
+			selectable=True,
+			RnDVisibility=Visible,
+			RnDRotation=False,
+			maxZoom=60000
+
+sciencevalues = ScienceValues(landedDataValue=8, splashedDataValue=8, flyingLowDataValue=6, flyingHighDataValue=6, inSpaceLowDataValue=7, inSpaceHighDataValue=5, recoveryValue=5, flyingAltitudeThreshold=22000, spaceAltitudeThreshold=400000)
+
+poles = Biome(name=Poles, displayName=Poles, value=0, color=[0.862745106, 0.75686276, 0.996078432, 1])
+
+midlands = Biome(name=Midlands, displayName=Midlands, value=0, color=[0.450980395, 0.180392161, 0.525490224, 1])
+
+explodium_sea = Biome(name=Explodium Sea, displayName=Explodium Sea, value=0, color=[0.694117665, 0.349019617, 0.513725519, 1])
+
+lowlands = Biome(name=Lowlands, displayName=Lowlands, value=0, color=[0.360784322, 0.0980392173, 0.435294122, 1])
+
+highlands = Biome(name=Highlands, displayName=Highlands, value=0, color=[0.541176498, 0.286274523, 0.611764729, 1])
+
+peaks = Biome(name=Peaks, displayName=Peaks, value=0, color=[0.65882355, 0.443137258, 0.729411781, 1])
+
+impact_ejecta = Biome(name=Impact Ejecta, displayName=Impact Ejecta, value=0, color=[0.654901981, 0.396078438, 0.980392158, 1])
+
+crater_lake = Biome(name=Crater Lake, displayName=Crater Lake, value=0, color=[0.556862772, 0.184313729, 0.360784322, 1])
+
+western_sea = Biome(name=Western Sea, displayName=Western Sea, value=0, color=[0.835294127, 0.556862772, 0.690196097, 1])
+
+olympus = Biome(name=Olympus, displayName=Olympus, value=0, color=[1 ,1, 1, 1])
+
+eastern_sea = Biome(name=Eastern Sea, displayName=Eastern Sea, value=0, color=[0.41568628, 0.0705882385, 0.235294119, 1])
+
+craters = Biome(name=Craters, displayName=Craters, value=0, color=[0.654901981, 0.396078438, 0.980392158, 1]
+
+foothills = Biome(name=Foothills, displayName=Foothills, value=0, color=[0.811764717, 0.650980413, 0.854901969, 1])
+
+akatsuki_lake = Biome(name=Akatsuki Lake, displayName=Akatsuki Lake, value=0, color=[0.729411781, 0.568627477, 0.741176486, 1]
+
+shallows = Biome(name=Shallows, displayName=Shallows, value=0, color=[0.545098066, 0.400000006, 0.552941203, 1])
+
+orbit = Orbit(referenceBody=Sun, inclination=2.09999990463257, eccentricity=0.00999999977648258, semiMajorAxis=9832684544, longitudeOfAscendingNode=15, argumentOfPeriapsis=0, meanAnomalyAtEpoch=3.14000010490417, meanAnomaly,AtEpochD=179.908753681645, epoch=0, color=[0.423529416, 0.125490203, 0.894117653,0.501960814], nodeColor=[0.423529416, 0.125490203, 0.894117653, 0.501960814], mode=REDRAW_AND_RECALCULATE, icon=ALL, cameraSmaRatioBounds=[0.03, 25], period=5657995.14648304)
+
+scaledversion = ScaledVersion(type=Atmospheric, fadeStart=20000, fadeEnd=60000, sphericalModel=False, deferMesh=False, invisible=False)
+
+
+                      Atmosphere
+		{
+			enabled = True // Whether the body has an atmosphere.
+			oxygen = False // Whether the atmosphere contains oxygen.
+			staticDensityASL = 6.23837138885624 // Atmospheric density at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			adiabaticIndex = 1.20000004768372
+			atmosphereDepth = 90000 // The height of the atmosphere.
+			gasMassLapseRate = 19.0254171112692
+			atmosphereMolarMass = 0.0430000014603138
+			pressureCurveIsNormalized = False // Whether the pressure curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			staticPressureASL = 506.625 // The static pressure at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			temperatureCurveIsNormalized = False // Whether the temperature curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			temperatureLapseRate = 0.00453333333333333
+			temperatureSeaLevel = 408 // The static temperature at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			ambientColor = 0.223535195,0.194325268,0.305882365,1 // All objects inside of the atmosphere will slightly shine in this color.
+			lightColor = 0.449885309,0.514925361,0.347322196,1
+			addAFG = True
+
+properties.add_science(sciencevalues)
+biomes = [poles, midlands, explodium_sea, lowlands, highlands, peaks, impact_ejecta, crater_lake, western_sea, olympus, eastern_sea, craters, foothills, akatsuki_lake, shallows]
+for b in biome:
+    properties.add_biome(b)
+eeloo.add_properties(properties)
+eeloo.add_orbit(orbit)
+eeloo.add_scaled(scaledversion)
+            
+            Body
 	{
 		name = Gilly
 		barycenter = False
@@ -750,7 +626,15 @@ lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
 			cameraSmaRatioBounds = 0.12 12
 			period = 388587.376847929
 		}
-
+		ScaledVersion
+		{
+			type = Vacuum
+			fadeStart = 7000
+			fadeEnd = 10000
+			sphericalModel = False
+			deferMesh = False
+			invisible = False
+        
 {
 	Body
 	{
@@ -880,6 +764,14 @@ lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
 			cameraSmaRatioBounds = 0.03 25
 			period = 65517.8621348081
 		}
+        		ScaledVersion
+		{
+			type = Vacuum
+			fadeStart = 20000
+			fadeEnd = 25000
+			sphericalModel = False
+			deferMesh = False
+			invisible = False
 {
 	Body
 	{
@@ -949,7 +841,23 @@ lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
 			cameraSmaRatioBounds = 0.03 25
 			period = 104661432.107989
 		}
-
+		Atmosphere
+		{
+			enabled = True // Whether the body has an atmosphere.
+			oxygen = False // Whether the atmosphere contains oxygen.
+			staticDensityASL = 6.70262205528434 // Atmospheric density at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			adiabaticIndex = 1.43
+			atmosphereDepth = 200000 // The height of the atmosphere.
+			gasMassLapseRate = 2.07657256052129
+			atmosphereMolarMass = 0.0022
+			pressureCurveIsNormalized = False // Whether the pressure curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			staticPressureASL = 1519.875 // The static pressure at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			temperatureCurveIsNormalized = False // Whether the temperature curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			temperatureLapseRate = 0.001
+			temperatureSeaLevel = 200 // The static temperature at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			ambientColor = 0.0754820928,0.208955199,0.0686121732,1 // All objects inside of the atmosphere will slightly shine in this color.
+			lightColor = 0.674509823,0.596078455,0.850980401,0
+			addAFG = True
 {
 	Body
 	{
@@ -1100,7 +1008,23 @@ lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
 			cameraSmaRatioBounds = 0.03 25
 			period = 9203544.61750141
 		}
-
+		Atmosphere
+		{
+			enabled = True // Whether the body has an atmosphere.
+			oxygen = True // Whether the atmosphere contains oxygen.
+			staticDensityASL = 1.22497705725583 // Atmospheric density at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			adiabaticIndex = 1.39999997615814
+			atmosphereDepth = 70000 // The height of the atmosphere.
+			gasMassLapseRate = 8.33518264702189
+			atmosphereMolarMass = 0.0289644002914429
+			pressureCurveIsNormalized = False // Whether the pressure curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			staticPressureASL = 101.324996948242 // The static pressure at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			temperatureCurveIsNormalized = False // Whether the temperature curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			temperatureLapseRate = 0.0041
+			temperatureSeaLevel = 287 // The static temperature at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			ambientColor = 0.243137255,0.250980407,0.254901975,1 // All objects inside of the atmosphere will slightly shine in this color.
+			lightColor = 0.649999976,0.569999993,0.474999994,0.5
+			addAFG = True
 {
     Body
     {
@@ -1244,7 +1168,23 @@ lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
             cameraSmaRatioBounds = 0.03 25
             period = 52980.8790593796
         }
-
+		Atmosphere
+		{
+			enabled = True // Whether the body has an atmosphere.
+			oxygen = True // Whether the atmosphere contains oxygen.
+			staticDensityASL = 0.764571404126208 // Atmospheric density at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			adiabaticIndex = 1.39999997615814
+			atmosphereDepth = 50000 // The height of the atmosphere.
+			gasMassLapseRate = 4.84741125702493
+			atmosphereMolarMass = 0.0289644002914429
+			pressureCurveIsNormalized = False // Whether the pressure curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			staticPressureASL = 60.795 // The static pressure at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			temperatureCurveIsNormalized = False // Whether the temperature curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			temperatureLapseRate = 0.00564
+			temperatureSeaLevel = 282 // The static temperature at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			ambientColor = 0.187128037,0.239393175,0.305882365,1 // All objects inside of the atmosphere will slightly shine in this color.
+			lightColor = 0.843283594,0.668219268,0.49830395,0
+			addAFG = True
 {
     Body
     {
@@ -1886,7 +1826,22 @@ lowlands = Biomes(name='Lowlands', displayName='Lowlands', value=0,
                 spaceAltitudeThreshold = 1E+09
             }
         }
-
+		Atmosphere
+		{
+			enabled = True // Whether the body has an atmosphere.
+			oxygen = False // Whether the atmosphere contains oxygen.
+			staticDensityASL = 0.00072492861572823 // Atmospheric density at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			adiabaticIndex = 1.42999994754791
+			atmosphereDepth = 600000 // The height of the atmosphere.
+			gasMassLapseRate = 0.465695397616382
+			atmosphereMolarMass = 0.00219999998807907
+			pressureCurveIsNormalized = False // Whether the pressure curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			staticPressureASL = 16 // The static pressure at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			temperatureCurveIsNormalized = False // Whether the temperature curve should use absolute (0 - atmosphereDepth) or relative (0 - 1) values.
+			temperatureLapseRate = 0.00973333333333333
+			temperatureSeaLevel = 5840 // The static temperature at sea level. Used to calculate the parameters of the atmosphere if no curves are used.
+			ambientColor = 0,0,0,0 // All objects inside of the atmosphere will slightly shine in this color.
+			addAFG = True
 {
     Body
     {
