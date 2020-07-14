@@ -1893,161 +1893,61 @@ properties = Properties(description='Jool is particularly known for being a '\
                 }
             }
         }
-        Orbit
-        {
-            referenceBody = Jool
-            inclination = 0.025000000372529
-            eccentricity = 0
-            semiMajorAxis = 68500000
-            longitudeOfAscendingNode = 0
-            argumentOfPeriapsis = 0
-            meanAnomalyAtEpoch = 3.14000010490417
-            meanAnomalyAtEpochD = 179.908753681645
-            epoch = 0
-            color = 0.827450991,0.666666687,0.666666687,0.501960814
-            nodeColor = 0.827450991,0.666666687,0.666666687,0.501960814
-            mode = REDRAW_AND_RECALCULATE
-            icon = ALL
-            cameraSmaRatioBounds = 0.03 25
-            period = 211926.35802123
-        }
+orbit = Orbit(referenceBody='Jool', inclination=0.025000000372529, eccentricity=0, semiMajorAxis=68500000, longitudeOfAscendingNode=0, argumentOfPeriapsis=0, meanAnomalyAtEpoch=3.14000010490417, meanAnomalyAtEpochD=179.908753681645, epoch=0, color=[0.827450991, 0.666666687, 0.666666687, 0.501960814], nodeColor=[0.827450991, 0.666666687, 0.666666687, 0.501960814], mode='REDRAW_AND_RECALCULATE', icon='ALL', cameraSmaRatioBounds=[0.03, 25], period=211926.35802123)
 
-{
-    Body
-    {
-        name = Vall
-        barycenter = False
-        identifier = Squad/Vall
-        implements = 
-        finalizeOrbit = False
-        randomMainMenuBody = False
-        contractWeight = 30
-        Properties
-        {
-            description = Vall was one of the last Moons of Jool to be discovered. Frustrated scientists kept attempting to wipe it off the lenses of their telescopes. Eventually after a rash of returned telescopes, Advanced Optics Co. finally decided to just tell them it was an actual object in the sky.
-            radius = 300000
-            geeASL = 0.235080276562617
-            mass = 3.10876554482042E+21
-            gravParameter = 207481499473.751
-            rotates = True
-            rotationPeriod = 105962.088893924
-            tidallyLocked = True
-            initialRotation = 0
-            inverseRotThresholdAltitude = 100000
-            albedo = 0.5
-            emissivity = 0.7
-            coreTemperatureOffset = 40
-            timewarpAltitudeLimits = 0 24500 24500 24500 40000 60000 80000 100000
-            sphereOfInfluence = 2406401.44479404
-            solarRotationPeriod = False
-            navballSwitchRadiusMult = 0.06
-            navballSwitchRadiusMultLow = 0.055
-            biomeMap = BUILTIN/vall_biome
-            nonExactThreshold = -1
-            exactSearch = False
-            useTheInName = False
-            displayName = Vall^N
-            selectable = True
-            RnDVisibility = Visible
-            RnDRotation = False
-            maxZoom = 60000
-            ScienceValues
-            {
-                landedDataValue = 12
-                splashedDataValue = 1
-                flyingLowDataValue = 1
-                flyingHighDataValue = 1
-                inSpaceLowDataValue = 9
-                inSpaceHighDataValue = 8
-                recoveryValue = 8
-                flyingAltitudeThreshold = 18000
-                spaceAltitudeThreshold = 90000
-            }
-            Biomes
-            {
-                Value
-                {
-                    name = Poles
-                    displayName = Poles
-                    value = 0
-                    color = 0.745098054,0.968627453,0.988235295,1
-                }
-                Value
-                {
-                    name = Midlands
-                    displayName = Midlands
-                    value = 0
-                    color = 0.419607848,0.776470602,0.807843149,1
-                }
-                Value
-                {
-                    name = Highlands
-                    displayName = Highlands
-                    value = 0
-                    color = 0.270588249,0.698039234,0.737254918,1
-                }
-                Value
-                {
-                    name = Lowlands
-                    displayName = Lowlands
-                    value = 0
-                    color = 1,1,1,1
-                }
-                Value
-                {
-                    name = Northeast Basin
-                    displayName = Northeast Basin
-                    value = 0
-                    color = 0.698039234,0.698039234,0.698039234,1
-                }
-                Value
-                {
-                    name = Northwest Basin
-                    displayName = Northwest Basin
-                    value = 0
-                    color = 0.588235319,0.588235319,0.588235319,1
-                }
-                Value
-                {
-                    name = Southern Basin
-                    displayName = Southern Basin
-                    value = 0
-                    color = 0.866666675,0.866666675,0.866666675,1
-                }
-                Value
-                {
-                    name = Southern Valleys
-                    displayName = Southern Valleys
-                    value = 0
-                    color = 0.78039217,0.78039217,0.78039217,1
-                }
-                Value
-                {
-                    name = Mountains
-                    displayName = Mountains
-                    value = 0
-                    color = 0.611764729,0.850980401,0.870588243,1
-                }
-            }
-        }
-        Orbit
-        {
-            referenceBody = Jool
-            inclination = 0
-            eccentricity = 0
-            semiMajorAxis = 43152000
-            longitudeOfAscendingNode = 0
-            argumentOfPeriapsis = 0
-            meanAnomalyAtEpoch = 0.899999976158142
-            meanAnomalyAtEpochD = 51.5662001957363
-            epoch = 0
-            color = 0.431372553,0.607843161,0.70588237,0.501960814
-            nodeColor = 0.431372553,0.607843161,0.70588237,0.501960814
-            mode = REDRAW_AND_RECALCULATE
-            icon = ALL
-            cameraSmaRatioBounds = 0.12 12
-            period = 105962.088893924
-        }                                                       
+vall = CelestialBody(name='Vall', barycenter=False, identifier='Squad/Vall', implements=None, finalizeOrbit=False, randomMainMenuBody=False, contractWeight=30)
+
+properties = Properties(
+            description='Vall was one of the last Moons of Jool to be discovered. Frustrated scientists kept attempting to wipe it off the lenses of their telescopes. Eventually after a rash of returned telescopes, Advanced Optics Co. finally decided to just tell them it was an actual object in the sky.',
+            radius=300000,
+            geeASL=0.235080276562617,
+            mass=3.10876554482042E+21,
+            gravParameter=207481499473.751,
+            rotates=True,
+            rotationPeriod=105962.088893924,
+            tidallyLocked=True,
+            initialRotation=0,
+            inverseRotThresholdAltitude=100000,
+            albedo=0.5,
+            emissivity=0.7,
+            coreTemperatureOffset=40,
+            timewarpAltitudeLimits=[0, 24500, 24500, 24500, 40000, 60000, 80000, 100000],
+            sphereOfInfluence=2406401.44479404,
+            solarRotationPeriod=False,
+            navballSwitchRadiusMult=0.06,
+            navballSwitchRadiusMultLow=0.055,
+            biomeMap='BUILTIN/vall_biome',
+            nonExactThreshold=-1,
+            exactSearch=False,
+            useTheInName=False,
+            displayName='Vall^N',
+            selectable=True,
+            RnDVisibility='Visible',
+            RnDRotation=False,
+            maxZoom=60000)
+
+sciencevalues = ScienceValues(landedDataValue=12, splashedDataValue=1, flyingLowDataValue=1, flyingHighDataValue=1, inSpaceLowDataValue=9, inSpaceHighDataValue=8, recoveryValue=8, flyingAltitudeThreshold=18000, spaceAltitudeThreshold=90000)
+
+poles = Biome(name='Poles', displayName='Poles', value=0, color=[0.745098054, 0.968627453, 0.988235295, 1])
+
+midlands = Biome(name='Midlands', displayName='Midlands', value=0, color=[0.419607848, 0.776470602, 0.807843149, 1])
+
+highlands = Biome(name='Highlands', displayName='Highlands', value=0, color=[0.270588249, 0.698039234, 0.737254918, 1])
+
+lowlands = Biome(name='Lowlands', displayName='Lowlands', value=0, color=[1, 1, 1, 1]
+
+northeast_basin = Biome(name='Northeast Basin', displayName='Northeast Basin', value=0, color=[0.698039234, 0.698039234, 0.698039234, 1])
+
+northwest_basin = Biome(name='Northwest Basin', displayName='Northwest Basin', value=0, color=[0.588235319, 0.588235319, 0.588235319, 1]
+
+southern_basin = Biome(name='Southern Basin', displayName='Southern Basin', value=0, color=[0.866666675, 0.866666675, 0.866666675, 1])
+
+southern_valleys = Biome(name='Southern Valleys', displayName='Southern Valleys', value=0, color=[0.78039217, 0.78039217, 0.78039217, 1])
+
+mountains = Biome(name='Mountains', displayName='Mountains', value=0, color=[0.611764729, 0.850980401, 0.870588243, 1])
+
+otbit = Orbit(referenceBody=Jool, inclination=0, eccentricity=0, semiMajorAxis=43152000, longitudeOfAscendingNode=0, argumentOfPeriapsis=0, meanAnomalyAtEpoch=0.899999976158142, meanAnomalyAtEpochD=51.5662001957363, epoch=0, color=[0.431372553, 0.607843161, 0.70588237, 0.501960814], nodeColor=[0.431372553, 0.607843161, 0.70588237, 0.501960814], mode='REDRAW_AND_RECALCULATE', icon='ALL', cameraSmaRatioBounds=[0.12, 12], period=105962.088893924)
+                                                  
 
 
 class PART(object):
